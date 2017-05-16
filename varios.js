@@ -1,6 +1,6 @@
 angular
 .module('ghr.varios', [])
-.component('ghrVarios', {
+.component('ghrContactos', {
   templateUrl: '../bower_components/component-varios/varios.html',
   controller() {
     const vm = this;
