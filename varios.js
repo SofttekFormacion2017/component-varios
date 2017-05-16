@@ -1,5 +1,5 @@
 angular
-.module('ghr.varios', [])
+.module('ghr.varios', ['ghr.varios.technologias'])
 .component('ghrContactos', {
   templateUrl: '../bower_components/component-varios/varios.html',
   controller() {
