@@ -1,8 +1,8 @@
 {
-  "name": "component-varios",
+  "name": "component-tecnologias",
   "homepage": "https://github.com/SofttekFormacion2017/component-varios",
-  "description": "componente varios",
-  "main": ["varios.js", "varios.html"],
+  "description": "componente tecnologias",
+  "main": ["tecnologias.js"],
   "authors": [
     "Equipo varios"
   ],
