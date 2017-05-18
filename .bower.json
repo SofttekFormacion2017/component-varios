@@ -1,0 +1,31 @@
+{
+  "name": "component-varios",
+  "homepage": "https://github.com/SofttekFormacion2017/component-varios",
+  "description": "componente varios",
+  "main": [
+    "tecnologias.html",
+    "tecnologia.html",
+    "tecnologias.js"
+  ],
+  "authors": [
+    "Equipo varios"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "644a842606",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "644a8426060c62b9bef9c4dd7f3eac1b12dbc082"
+  },
+  "_source": "https://github.com/SofttekFormacion2017/component-varios.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/SofttekFormacion2017/component-varios.git"
+}
