@@ -1,17 +1,22 @@
 
-<div class="padre">
-  <h1 class="h1 tablita">Lista de Tecnologias</h1>
-  <div class="buscador form-group">
-  <input type="text"  ng-model="buscar" class="form-control" placeholder="Buscar">
+<div class="container-fluid">
+  <h1 class="h1">Lista de Tecnologias</h1>
+  <div class="row form-group">
+    <div class="col-sm-offset-6 col-sm-6">
+      <input type="text"  ng-model="buscar" class="form-control" placeholder="Buscar">
+    </div>
 </div>
   <table class="table table-responsive table-striped">
-    <tr  ng-init="$ctrl.orderByPropiedad='';">
-      <th ng-click="$ctrl.orderByPropiedad == 'id' ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad='id'" > ID <span class="glyphicon glyphicon-sort"/>
-      </th>
-      <th  ng-click="$ctrl.orderByPropiedad == 'nombre' ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad='nombre'" >NOMBRE <span class="glyphicon glyphicon-sort"/></th>
-      <th >DESCRIPCION</th>
-      <th >EDITAR</th>
-    </tr>
+    <thead>
+      <tr  ng-init="$ctrl.orderByPropiedad='';">
+        <th ng-click="$ctrl.orderByPropiedad == 'id' ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad='id'" > ID <span class="glyphicon glyphicon-sort"/>
+        </th>
+        <th  ng-click="$ctrl.orderByPropiedad == 'nombre' ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad='nombre'" >NOMBRE <span class="glyphicon glyphicon-sort"/></th>
+        <th >DESCRIPCION</th>
+        <th >EDITAR</th>
+      </tr>
+    </thead>
+    
     <tr ng-repeat ="tecno in (tecnologia = ($ctrl.arrayTecnologias | filter:buscar)) | limitTo:$ctrl.maxSize:($ctrl.currentPage-1)*$ctrl.maxSize | orderBy: ($ctrl.reverse+$ctrl.orderByPropiedad) ">
       <td >{{tecno.id}}</td>
       <td>{{tecno.nombre}}</td>
