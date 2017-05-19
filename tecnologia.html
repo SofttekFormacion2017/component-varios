@@ -17,7 +17,7 @@
       </tr>
     </thead>
 
-    <tr ng-repeat ="tecno in (tecnologia = ($ctrl.arrayTecnologias | filter:buscar)) | limitTo:$ctrl.maxSize:($ctrl.currentPage-1)*$ctrl.maxSize | orderBy: ($ctrl.reverse+$ctrl.orderByPropiedad) ">
+    <tr ng-repeat ="tecno in (tecnologia = ($ctrl.arrayTecnologias | filter:buscar)) |  orderBy: ($ctrl.reverse+$ctrl.orderByPropiedad) | limitTo:$ctrl.maxSize:($ctrl.currentPage-1)*$ctrl.maxSize  ">
       <td ng-repeat="datosTecnologia in $ctrl.cabecera ">
         {{tecno[datosTecnologia]}}
       </td>
