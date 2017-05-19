@@ -29,12 +29,11 @@ function controlTecto() {
 function generarTecnologias() {
   const vm = this;
   vm.arrayTecnologias = crearTecnologias();
-  console.log(vm.arrayTecnologias);
   vm.totalItems = vm.arrayTecnologias.length;
   vm.currentPage = 1;
 
   vm.setPage = function (pageNo) {
-    vm.currentPage = pageNo;
+    vm.currentPage = pageNo ;
   };
 
   vm.maxSize = 5;
@@ -73,7 +72,7 @@ function crearTecnologias() {
 
 function crearTecnologia(i) {
   tecnologia = {
-    id: i-5,
+    id: i,
     nombre: obtenerValor(nombres),
     descripcion: obtenerValor(descripciones)
   };
