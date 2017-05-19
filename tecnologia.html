@@ -8,23 +8,28 @@
 </div>
   <table class="table table-responsive table-striped">
     <thead>
-      <tr  ng-init="$ctrl.orderByPropiedad='';">
-        <th ng-click="$ctrl.orderByPropiedad == 'id' ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad='id'" > ID <span class="glyphicon glyphicon-sort"/>
+      <tr  ng-init="$ctrl.orderByPropiedad=''; ">
+        <th ng-click="$ctrl.orderByPropiedad == 'id' ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad='id'"> ID <span class="glyphicon" ng-class="
+          $ctrl.orderByPropiedad != 'id' ? 'glyphicon-sort' : ($ctrl.orderReverse ?  'glyphicon-sort-by-attributes-alt' :
+          'glyphicon-sort-by-attributes')" />
         </th>
-        <th  ng-click="$ctrl.orderByPropiedad == 'nombre' ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad='nombre'" >NOMBRE <span class="glyphicon glyphicon-sort"/></th>
+        <th  ng-click="$ctrl.orderByPropiedad == 'nombre' ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad='nombre'" >NOMBRE <span class="glyphicon"
+          ng-class="
+            $ctrl.orderByPropiedad != 'nombre' ? 'glyphicon-sort' : ($ctrl.orderReverse ?  'glyphicon-sort-by-attributes-alt' :
+            'glyphicon-sort-by-attributes')" /> </th>
         <th >DESCRIPCION</th>
         <th >EDITAR</th>
       </tr>
     </thead>
-    
+
     <tr ng-repeat ="tecno in (tecnologia = ($ctrl.arrayTecnologias | filter:buscar)) | limitTo:$ctrl.maxSize:($ctrl.currentPage-1)*$ctrl.maxSize | orderBy: ($ctrl.reverse+$ctrl.orderByPropiedad) ">
       <td >{{tecno.id}}</td>
       <td>{{tecno.nombre}}</td>
       <td>{{tecno.descripcion}}</td>
       <td class="col-md-3 col-xs-3">
         <div class="btn-group" uib-dropdown>
-              <button id="split-button" type="button" class="btn btn-success btn-xs ">Ver</button>
-              <button type="button" class="btn btn-success btn-xs" uib-dropdown-toggle>
+              <button id="split-button" type="button" class="btn btn-primary  ">Ver</button>
+              <button type="button" class="btn btn-primary " uib-dropdown-toggle>
                     <span class="caret"></span>
                     <span class="sr-only">Split button!</span>
                 </button>
