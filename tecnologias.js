@@ -36,7 +36,7 @@ function generarTecnologias() {
     vm.currentPage = pageNo ;
   };
 
-  vm.maxSize = 5;
+  vm.maxSize = 10;
   //INTENTO DE BOTON
   // vm.items = [
   //   'opcion 1',
@@ -64,7 +64,7 @@ var descripciones = ['descripcion1', 'descripcion2', 'descripcion3',
 
 function crearTecnologias() {
   var arrayTecnologias = [];
-  for (var i = 0; i < 200; i++) {
+  for (var i = 1; i < 200; i++) {
     arrayTecnologias.push(crearTecnologia(i));
   }
   return arrayTecnologias;
