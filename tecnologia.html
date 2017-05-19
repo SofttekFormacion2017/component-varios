@@ -8,24 +8,19 @@
 </div>
   <table class="table table-responsive table-striped">
     <thead>
-      <tr  ng-init="$ctrl.orderByPropiedad=''; ">
-        <th ng-click="$ctrl.orderByPropiedad == 'id' ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad='id'"> ID <span class="glyphicon" ng-class="
-          $ctrl.orderByPropiedad != 'id' ? 'glyphicon-sort' : ($ctrl.orderReverse ?  'glyphicon-sort-by-attributes-alt' :
+      <tr  ng-init="$ctrl.orderByPropiedad=''; $ctrl.cabecera = ['id','nombre','descripcion']">
+        <th ng-repeat = "campo in $ctrl.cabecera"  ng-click="$ctrl.orderByPropiedad == campo ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad=campo"> {{campo}} <span class="glyphicon" ng-class="
+          $ctrl.orderByPropiedad != campo ? 'glyphicon-sort' : ($ctrl.orderReverse ?  'glyphicon-sort-by-attributes-alt' :
           'glyphicon-sort-by-attributes')" />
         </th>
-        <th  ng-click="$ctrl.orderByPropiedad == 'nombre' ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad='nombre'" >NOMBRE <span class="glyphicon"
-          ng-class="
-            $ctrl.orderByPropiedad != 'nombre' ? 'glyphicon-sort' : ($ctrl.orderReverse ?  'glyphicon-sort-by-attributes-alt' :
-            'glyphicon-sort-by-attributes')" /> </th>
-        <th >DESCRIPCION</th>
-        <th >EDITAR</th>
+        <th>Acción</th>
       </tr>
     </thead>
 
     <tr ng-repeat ="tecno in (tecnologia = ($ctrl.arrayTecnologias | filter:buscar)) | limitTo:$ctrl.maxSize:($ctrl.currentPage-1)*$ctrl.maxSize | orderBy: ($ctrl.reverse+$ctrl.orderByPropiedad) ">
-      <td >{{tecno.id}}</td>
-      <td>{{tecno.nombre}}</td>
-      <td>{{tecno.descripcion}}</td>
+      <td ng-repeat="datosTecnologia in $ctrl.cabecera ">
+        {{tecno[datosTecnologia]}}
+      </td>
       <td class="col-md-3 col-xs-3">
         <div class="btn-group" uib-dropdown>
               <button id="split-button" type="button" class="btn btn-primary  ">Ver</button>
