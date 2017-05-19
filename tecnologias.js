@@ -1,11 +1,11 @@
 angular
-  .module('ghr.tecnologias', [])
+  .module('ghr.varios', [])
   .component('ghrTecnologias', {
-    templateUrl: '../bower_components/component-tecnologias/tecnologias.html',
+    templateUrl: '../bower_components/component-varios/tecnologias.html',
     controller: controlTecto
   })
   .component('tecnologiasList', {
-    templateUrl: '../bower_components/component-tecnologias/tecnologia.html',
+    templateUrl: '../bower_components/component-varios/tecnologia.html',
     controller: generarTecnologias
   })
   ;
@@ -29,12 +29,11 @@ function controlTecto() {
 function generarTecnologias() {
   const vm = this;
   vm.arrayTecnologias = crearTecnologias();
-  console.log(vm.arrayTecnologias);
   vm.totalItems = vm.arrayTecnologias.length;
   vm.currentPage = 1;
 
   vm.setPage = function (pageNo) {
-    vm.currentPage = pageNo;
+    vm.currentPage = pageNo ;
   };
 
   vm.maxSize = 5;
@@ -55,20 +54,25 @@ function generarTecnologias() {
   //FIN DE BOTÓN
 }
 
-var nombres = ['java', 'javaScript', 'CSS', 'HTML', 'Angular', 'XML'];
+var nombres = ['java', 'javaScript', 'CSS', 'HTML',
+ 'Angular', 'XML','C++','PHP','Pascal','Ajax','Assembly',
+ 'Scheme','Arduino','Python','Forth','Swift','Cuda','Delphi',
+'.NET','Cobol','Visual Basic','WebDNA','Groovy','Smalltalk',
+'Active Server Page','Scratch','Objective-C','TCL'];
 var descripciones = ['descripcion1', 'descripcion2', 'descripcion3',
   'descripcion4', 'descripcion5', 'descripcion6', 'descripcion7', 'descripcion8', 'descripcion9'];
 
 function crearTecnologias() {
   var arrayTecnologias = [];
   for (var i = 0; i < 200; i++) {
-    arrayTecnologias.push(crearTecnologia());
+    arrayTecnologias.push(crearTecnologia(i));
   }
   return arrayTecnologias;
 }
 
-function crearTecnologia() {
+function crearTecnologia(i) {
   tecnologia = {
+    id: i,
     nombre: obtenerValor(nombres),
     descripcion: obtenerValor(descripciones)
   };
