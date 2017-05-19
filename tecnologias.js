@@ -4,7 +4,7 @@ angular
     templateUrl: '../bower_components/component-varios/tecnologias.html',
     controller: controlTecto
   })
-  .component('tecnologiasList', {
+  .component('ghrTecnologiasList', {
     templateUrl: '../bower_components/component-varios/tecnologia.html',
     controller: generarTecnologias
   })
