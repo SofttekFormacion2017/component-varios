@@ -18,7 +18,7 @@
   <div class="col-md-3 col-xs-3">EDITAR</div>
 </div>
 <div class="row form-control" ng-repeat ="tecno in (tecnologia = ($ctrl.arrayTecnologias | filter:buscar)) | limitTo:$ctrl.maxSize:($ctrl.currentPage-1)*$ctrl.maxSize | orderBy: ($ctrl.reverse+$ctrl.orderByPropiedad) ">
-      <div class="col-md-3 col-xs-3">{{tecno.id}  }</div>
+      <div class="col-md-3 col-xs-3">{{tecno.id}}</div>
       <div class="col-md-3 col-xs-3">{{tecno.nombre}}</div>
       <div class="col-md-3 col-xs-3">{{tecno.descripcion}}</div>
       <div class="col-md-3 col-xs-3">
