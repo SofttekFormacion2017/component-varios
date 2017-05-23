@@ -2,7 +2,7 @@ angular
   .module('ghr.varios', [])
   .component('ghrTecnologias', {
     templateUrl: '../bower_components/component-varios/tecnologias.html',
-    controller: controlTecto
+    controller: formularioTecnologiaController
   })
   .factory('tecnologiasFactory', function crearTecnologias() {
       // nombres y descripciones para crear las tecnologias con datos aleatorios
@@ -11,8 +11,7 @@ angular
       'Scheme','Arduino','Python','Forth','Swift','Cuda','Delphi',
       '.NET','Cobol','Visual Basic','WebDNA','Groovy','Smalltalk',
       'Active Server Page','Scratch','Objective-C','TCL'];
-      var descripciones = ['descripcion1', 'descripcion2', 'descripcion3',
-      'descripcion4', 'descripcion5', 'descripcion6', 'descripcion7', 'descripcion8', 'descripcion9'];
+      var descripciones = ['muy usado','poco usado'];
       var arrayTecnologias = [];
       for (var i = 1; i < 200; i++) {
         arrayTecnologias.push(crearTecnologia(i)); // enviamos la i como id de la tecnologia creada, llena el arrayTecnologias.
@@ -74,18 +73,30 @@ angular
     }
   });
 
-function controlTecto() {
+function formularioTecnologiaController($stateParams,tecnologiasFactory) {
   const vm = this;
-  vm.master = {};
+  console.log($stateParams);
+  console.log(tecnologiasFactory);
+  vm.original = findById($stateParams.id);
+  function findById(id){
+    for(var i = 0 ; i < tecnologiasFactory.length; i ++){
+      if(tecnologiasFactory[i].id==id)
+      return tecnologiasFactory[i]
+    }
+  }
+  // tecnologiasFactory.reduce(function(acc,v,i){
+  // }, {})
+
   vm.update = function (user) {
-    vm.master = angular.copy(user);
+    vm.original = vm.tecnologia
+    // console.log(angular.copy(user));
   };
   vm.reset = function (form) {
     if (form) {
       form.$setPristine();
       form.$setUntouched();
     }
-    vm.user = angular.copy(vm.master);
+    vm.tecnologia = angular.copy(vm.original);
   };
   vm.reset();
 }
@@ -125,5 +136,4 @@ function generarTecnologias(tecnologiasFactory,$uibModal, $log, $document) {
       vm.arrayTecnologias.splice(vm.arrayTecnologias.indexOf(eliminado),1);
     });
   }
-
 }
