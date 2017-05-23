@@ -31,7 +31,7 @@
               <li role="menuitem"><a href="#">Ver</a></li>
               <li class="divider"></li>
               <li role="menuitem"><a href="#">Editar</a></li>
-              <li role="menuitem" ><a href="#" ng-click="$ctrl.open(tecno.id)"> Borrar</a>
+              <li role="menuitem" ><a href="#" ng-click="$ctrl.open(tecno.id,tecno.nombre)">Borrar</a>
               </li>
             </ul>
         </div>
@@ -40,6 +40,6 @@
   </table>
 
   <div>
-    <ul uib-pagination total-items="tecnologia.length" ng-model="$ctrl.currentPage" max-size="$ctrl.maxSize" class="pagination" boundary-link-numbers="true"></ul>
+    <ul uib-pagination total-items="tecnologia.length" ng-model="$ctrl.currentPage" max-size="5"class="pagination" boundary-link-numbers="true"></ul>
   </div>
 </div>
