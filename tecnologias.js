@@ -73,6 +73,7 @@ angular
     }
   });
 
+
 function formularioTecnologiaController($stateParams,tecnologiasFactory) {
   const vm = this;
   console.log($stateParams);
