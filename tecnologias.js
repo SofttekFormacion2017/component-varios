@@ -8,7 +8,31 @@ angular
     templateUrl: '../bower_components/component-varios/tecnologia.html',
     controller: generarTecnologias
   })
-  ;
+  .component('eliminarTecnologiaModal', {
+      templateUrl: '../bower_components/component-varios/modal.html',
+      bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      },
+      controller: function () {
+        var vm = this;
+        vm.$onInit = function () {
+          vm.selected = vm.resolve.seleccionado;
+        };
+
+        vm.ok = function (seleccionado) {
+         vm.close({
+          $value: seleccionado
+         });
+      };
+      vm.cancel = function () {
+        vm.dismiss({
+          $value : 'cancel'
+        });
+      };
+    }
+  });
 
 function controlTecto() {
   const vm = this;
@@ -26,7 +50,7 @@ function controlTecto() {
   vm.reset();
 }
 
-function generarTecnologias() {
+function generarTecnologias($uibModal, $log, $document) {
   const vm = this;
   vm.arrayTecnologias = crearTecnologias();
   vm.totalItems = vm.arrayTecnologias.length;
@@ -52,6 +76,30 @@ function generarTecnologias() {
   //   vm.status.isopen = !$vm.status.isopen;
   // }
   //FIN DE BOTÓN
+  vm.animationsEnabled = true;
+  vm.open = function (id) {
+    var modalInstance = $uibModal.open({
+      animation: vm.animationsEnabled,
+      component: 'eliminarTecnologiaModal',
+      resolve: {
+        seleccionado: function () {
+          return id;
+        }
+
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+      vm.selected = selectedItem;
+      var eliminado;
+      for(var i = 0;i< vm.arrayTecnologias.length;i++){
+        if(vm.arrayTecnologias[i].id === selectedItem)
+        eliminado = vm.arrayTecnologias[i];
+      }
+      vm.arrayTecnologias.splice(vm.arrayTecnologias.indexOf(eliminado),1);
+    });
+  }
+
 }
 
 var nombres = ['java', 'javaScript', 'CSS', 'HTML',
