@@ -2,21 +2,46 @@ angular
   .module('ghr.varios', [])
   .component('ghrTecnologias', {
     templateUrl: '../bower_components/component-varios/tecnologias.html',
-    controller: controlTecto
+    controller: controlTecnoController
   })
+  .factory('tecnologiasFactory', function crearTecnologias() {
+      // nombres y descripciones para crear las tecnologias con datos aleatorios
+      var nombres = ['java', 'javaScript', 'CSS', 'HTML', 'Angular', 'XML','C++','PHP','Pascal','Ajax','Assembly',
+      'Scheme','Arduino','Python','Forth','Swift','Cuda','Delphi', '.NET','Cobol','Visual Basic','WebDNA','Groovy',
+      'Smalltalk', 'Active Server Page','Scratch','Objective-C','TCL'];
+      var descripciones = ['descripcion1', 'descripcion2', 'descripcion3','descripcion4', 'descripcion5',
+      'descripcion6', 'descripcion7', 'descripcion8', 'descripcion9'];
+      var arrayTecnologias = [];
+      for (var i = 1; i < 200; i++) {
+        arrayTecnologias.push(crearTecnologia(i));
+        // enviamos la i como id de la tecnologia creada, llena el arrayTecnologias.
+      }
+      return arrayTecnologias;
 
-  //componente para mostrar la lista de tecnologias
-  .factory('tecnoFactory', ['i', funtion tecno(i){
+    // creacion de un objeto tecnologia
+    function crearTecnologia(i) {
+      tecnologia = {
+        id: i,
+        nombre: obtenerValor(nombres),
+        descripcion: obtenerValor(descripciones)
+      };
+      return tecnologia;
+    }
 
-  }
-]){
-  }
+    // numero aleatorio para seleccionar un nombre y una descripcion de sus arrays.
+    function aleatorio(rango) {
+      return Math.floor(Math.random() * rango);
+    }
+
+    function obtenerValor(array) {
+      return array[aleatorio(array.length)];
+    }
+
+  })
   .component('ghrTecnologiasList', {
     templateUrl: '../bower_components/component-varios/tecnologia.html',
     controller: generarTecnologias
   })
-
-  //componente para eliminar tecnologias
   .component('eliminarTecnologiaModal', {
       templateUrl: '../bower_components/component-varios/botonera.html',
       bindings: {
@@ -24,49 +49,57 @@ angular
         close: '&',
         dismiss: '&'
       },
-      //funcion para seleccionar el boton
       controller: function () {
         var vm = this;
         vm.$onInit = function () {
           vm.selected = vm.resolve.seleccionado;
         };
 
-        //funcion para seleccionar la eleccion elegida o para cancelarla
         vm.ok = function (seleccionado) {
          vm.close({
           $value: seleccionado
          });
       };
+
       vm.cancel = function () {
         vm.dismiss({
           $value : 'cancel'
         });
       };
-
     }
   });
 
-  //funcion para controlar la lista de tecnologias
-function controlTecto() {
+function controlTecnoController($stateParams, tecnologiasFactory) {
   const vm = this;
-  vm.master = {};
+  console.log($stateParams);
+  console.log(tecnologiasFactory);
+  vm.original = findById($stateParams.id);
+  function findById(id){
+    for(var i = 0 ; i < tecnologiasFactory.length; i ++){
+      if(tecnologiasFactory[i].id==id)
+      return tecnologiasFactory[i]
+    }
+  }
+  // tecnologiasFactory.reduce(function(acc,v,i){
+  // }, {})
+
   vm.update = function (user) {
-    vm.master = angular.copy(user);
+    vm.original = vm.tecnologia
+    // console.log(angular.copy(user));
   };
   vm.reset = function (form) {
     if (form) {
       form.$setPristine();
       form.$setUntouched();
     }
-    vm.user = angular.copy(vm.master);
+    vm.tecnologia = angular.copy(vm.original);
   };
   vm.reset();
 }
 
-//funcion para generar tecnologias
-function generarTecnologias($uibModal, $log, $document) {
+function generarTecnologias(tecnologiasFactory, $uibModal, $log, $document) {
   const vm = this;
-  vm.arrayTecnologias = crearTecnologias();
+  vm.arrayTecnologias = tecnologiasFactory;
   vm.totalItems = vm.arrayTecnologias.length;
   vm.currentPage = 1;
 
@@ -74,30 +107,15 @@ function generarTecnologias($uibModal, $log, $document) {
     vm.currentPage = pageNo ;
   };
 
-  vm.maxSize = 10;
-  //INTENTO DE BOTON
-  // vm.items = [
-  //   'opcion 1',
-  //   'opcion 2',
-  //   'opcion 3'
-  // ],
-  // vm.status ={
-  //   isopen = false;
-  // },
-  // vm.toggleDropdown = function($event) {
-  //   vm.preventDefault();
-  //   vm.stopPropagation();
-  //   vm.status.isopen = !$vm.status.isopen;
-  // }
-  //FIN DE BOTÓN
+  vm.maxSize = 10;  //Elementos mostrados por página
   vm.animationsEnabled = true;
-  vm.open = function (id) {
+  vm.open = function (id, nombre) {
     var modalInstance = $uibModal.open({
       animation: vm.animationsEnabled,
       component: 'eliminarTecnologiaModal',
       resolve: {
         seleccionado: function () {
-          return id;
+          return id,nombre;
         }
 
       }
@@ -113,43 +131,5 @@ function generarTecnologias($uibModal, $log, $document) {
       vm.arrayTecnologias.splice(vm.arrayTecnologias.indexOf(eliminado),1);
     });
   }
-  this.vm = 0;
-  this.launch = function() {
-    //inyectar el factory al componente de tecnoloogia
-    this.i++;
-  }
-}
-function
-//array de los campos de tecnoloogia
-var nombres = ['java', 'javaScript', 'CSS', 'HTML',
- 'Angular', 'XML','C++','PHP','Pascal','Ajax','Assembly',
- 'Scheme','Arduino','Python','Forth','Swift','Cuda','Delphi',
-'.NET','Cobol','Visual Basic','WebDNA','Groovy','Smalltalk',
-'Active Server Page','Scratch','Objective-C','TCL'];
-var descripciones = ['descripcion1', 'descripcion2', 'descripcion3',
-  'descripcion4', 'descripcion5', 'descripcion6', 'descripcion7', 'descripcion8', 'descripcion9'];
 
-function crearTecnologias() {
-  var arrayTecnologias = [];
-  for (var i = 1; i < 200; i++) {
-    arrayTecnologias.push(crearTecnologia(i));
-  }
-  return arrayTecnologias;
-}
-
-function crearTecnologia(i) {
-  tecnologia = {
-    id: i,
-    nombre: obtenerValor(nombres),
-    descripcion: obtenerValor(descripciones)
-  };
-  return tecnologia;
-}
-
-function aleatorio(rango) {
-  return Math.floor(Math.random() * rango);
-}
-
-function obtenerValor(array) {
-  return array[aleatorio(array.length)];
 }
