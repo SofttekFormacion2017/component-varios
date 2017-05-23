@@ -1,15 +1,52 @@
 angular
-  .module('ghr.tecnologias', [])
+  .module('ghr.varios', [])
   .component('ghrTecnologias', {
-    templateUrl: '../bower_components/component-tecnologias/tecnologias.html',
+    templateUrl: '../bower_components/component-varios/tecnologias.html',
     controller: controlTecto
   })
-  .component('tecnologiasList', {
-    templateUrl: '../bower_components/component-tecnologias/tecnologia.html',
+
+  //componente para mostrar la lista de tecnologias
+  .factory('tecnoFactory', ['i', funtion tecno(i){
+
+  }
+]){
+  }
+  .component('ghrTecnologiasList', {
+    templateUrl: '../bower_components/component-varios/tecnologia.html',
     controller: generarTecnologias
   })
-  ;
 
+  //componente para eliminar tecnologias
+  .component('eliminarTecnologiaModal', {
+      templateUrl: '../bower_components/component-varios/botonera.html',
+      bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      },
+      //funcion para seleccionar el boton
+      controller: function () {
+        var vm = this;
+        vm.$onInit = function () {
+          vm.selected = vm.resolve.seleccionado;
+        };
+
+        //funcion para seleccionar la eleccion elegida o para cancelarla
+        vm.ok = function (seleccionado) {
+         vm.close({
+          $value: seleccionado
+         });
+      };
+      vm.cancel = function () {
+        vm.dismiss({
+          $value : 'cancel'
+        });
+      };
+
+    }
+  });
+
+  //funcion para controlar la lista de tecnologias
 function controlTecto() {
   const vm = this;
   vm.master = {};
@@ -26,18 +63,18 @@ function controlTecto() {
   vm.reset();
 }
 
-function generarTecnologias() {
+//funcion para generar tecnologias
+function generarTecnologias($uibModal, $log, $document) {
   const vm = this;
   vm.arrayTecnologias = crearTecnologias();
-  console.log(vm.arrayTecnologias);
   vm.totalItems = vm.arrayTecnologias.length;
   vm.currentPage = 1;
 
   vm.setPage = function (pageNo) {
-    vm.currentPage = pageNo;
+    vm.currentPage = pageNo ;
   };
 
-  vm.maxSize = 5;
+  vm.maxSize = 10;
   //INTENTO DE BOTON
   // vm.items = [
   //   'opcion 1',
@@ -53,22 +90,56 @@ function generarTecnologias() {
   //   vm.status.isopen = !$vm.status.isopen;
   // }
   //FIN DE BOTÓN
-}
+  vm.animationsEnabled = true;
+  vm.open = function (id) {
+    var modalInstance = $uibModal.open({
+      animation: vm.animationsEnabled,
+      component: 'eliminarTecnologiaModal',
+      resolve: {
+        seleccionado: function () {
+          return id;
+        }
 
-var nombres = ['java', 'javaScript', 'CSS', 'HTML', 'Angular', 'XML'];
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+      vm.selected = selectedItem;
+      var eliminado;
+      for(var i = 0;i< vm.arrayTecnologias.length;i++){
+        if(vm.arrayTecnologias[i].id === selectedItem)
+        eliminado = vm.arrayTecnologias[i];
+      }
+      vm.arrayTecnologias.splice(vm.arrayTecnologias.indexOf(eliminado),1);
+    });
+  }
+  this.vm = 0;
+  this.launch = function() {
+    //inyectar el factory al componente de tecnoloogia
+    this.i++;
+  }
+}
+function
+//array de los campos de tecnoloogia
+var nombres = ['java', 'javaScript', 'CSS', 'HTML',
+ 'Angular', 'XML','C++','PHP','Pascal','Ajax','Assembly',
+ 'Scheme','Arduino','Python','Forth','Swift','Cuda','Delphi',
+'.NET','Cobol','Visual Basic','WebDNA','Groovy','Smalltalk',
+'Active Server Page','Scratch','Objective-C','TCL'];
 var descripciones = ['descripcion1', 'descripcion2', 'descripcion3',
   'descripcion4', 'descripcion5', 'descripcion6', 'descripcion7', 'descripcion8', 'descripcion9'];
 
 function crearTecnologias() {
   var arrayTecnologias = [];
-  for (var i = 0; i < 200; i++) {
-    arrayTecnologias.push(crearTecnologia());
+  for (var i = 1; i < 200; i++) {
+    arrayTecnologias.push(crearTecnologia(i));
   }
   return arrayTecnologias;
 }
 
-function crearTecnologia() {
+function crearTecnologia(i) {
   tecnologia = {
+    id: i,
     nombre: obtenerValor(nombres),
     descripcion: obtenerValor(descripciones)
   };

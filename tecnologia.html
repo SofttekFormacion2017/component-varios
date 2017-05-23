@@ -1,27 +1,45 @@
-<h1>Lista de Tecnologias</h1>
-<div class="col-md-3">ID</div>
-<div class="col-md-3">NOMBRE</div>
-<div class="col-md-3">DESCRIPCION</div>
-<div class="row col-md-12" ng-repeat ="tecno in $ctrl.arrayTecnologias | limitTo:$ctrl.maxSize:$ctrl.currentPage*$ctrl.maxSize">
-      <div class="col-md-3">ID</div>
-      <div class="col-md-3">{{tecno.nombre}}</div>
-      <div class="col-md-3">{{tecno.descripcion}}</div>
-      <div class="col-md-3">
-        <div class="btn-group" uib-dropdown>
-          <button id="split-button" type="button" class="btn btn-primary">Ver</button>
-        <button type="button" class="btn btn-primary" uib-dropdown-toggle>
-        <span class="caret"></span>
-        <span class="sr-only">Split button!</span>
-      </button>
-      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-        <li role="menuitem"><a href="#">Ver</a></li>
-        <li role="menuitem"><a href="#">Editar</a></li>
-        <li class="divider"></li>
-        <li role="menuitem"><a href="#">Borrar</a></li>
-      </ul>
-      </div>
+<div class="container-fluid">
+  <h1 class="h1">Lista de Tecnologias</h1>
+  <div class="row form-group">
+    <div class="col-sm-offset-6 col-sm-6">
+      <input type="text"  ng-model="buscar" class="form-control" placeholder="Buscar">
     </div>
+</div>
+  <table class="table table-responsive table-striped">
+    <thead>
+      <tr  ng-init="$ctrl.orderByPropiedad=''; $ctrl.cabecera = ['id','nombre','descripcion']">
+        <th ng-repeat = "campo in $ctrl.cabecera"  ng-click="$ctrl.orderByPropiedad == campo ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse = $ctrl.orderReverse  ? '-' : ''; $ctrl.orderByPropiedad=campo"> {{campo}} <span class="glyphicon" ng-class="
+          $ctrl.orderByPropiedad != campo ? 'glyphicon-sort' : ($ctrl.orderReverse ?  'glyphicon-sort-by-attributes-alt' :
+          'glyphicon-sort-by-attributes')" />
+        </th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+
+    <tr ng-repeat ="tecno in (tecnologia = ($ctrl.arrayTecnologias | filter:buscar)) |  orderBy: ($ctrl.reverse+$ctrl.orderByPropiedad) | limitTo:$ctrl.maxSize:($ctrl.currentPage-1)*$ctrl.maxSize track by tecno.id">
+      <td ng-repeat="datosTecnologia in $ctrl.cabecera ">
+        {{tecno[datosTecnologia]}}
+      </td>
+      <td class="col-md-3 col-xs-3">
+        <div class="btn-group" uib-dropdown>
+              <button id="split-button" type="button" class="btn btn-primary  ">Ver</button>
+              <button type="button" class="btn btn-primary " uib-dropdown-toggle>
+                    <span class="caret"></span>
+                    <span class="sr-only">Split button!</span>
+                </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+              <li role="menuitem"><a href="#">Ver</a></li>
+              <li class="divider"></li>
+              <li role="menuitem"><a href="#">Editar</a></li>
+              <li role="menuitem" ><a href="#" ng-click="$ctrl.open(tecno.id)"> Borrar</a>
+              </li>
+            </ul>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div>
+    <ul uib-pagination total-items="tecnologia.length" ng-model="$ctrl.currentPage" max-size="$ctrl.maxSize" class="pagination" boundary-link-numbers="true"></ul>
   </div>
-<div >
-  <ul uib-pagination total-items="$ctrl.totalItems" ng-model="$ctrl.currentPage" max-size="$ctrl.maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
 </div>
