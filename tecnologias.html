@@ -1,24 +1,23 @@
-<h1 style="text-align: center">FORMULARIO <small>Tecnologias</small></h1>
-<div class="row">
-  <div class="col-md-4"></div>
-  <div class="col-md-4">
-      <form>
+<div class="container-fluid row">
+  <div class="col-md-2 col-xs-2"></div>
+  <div class="col-md-8 col-xs-8">
+  <h1 style="text-align: center">Tecnologias <small>Formulario</small></h1>
+      <form >
           <div class="form-group">
-            <label for="nombre">NOMBRE</label>
-            <input name="nombre"  class="form-control" ng-model="$ctrl.user.name" required>
-          </div>
-        <div class="form-group">
-          <label for="descripcion">DESCRIPCION:</label>
-          <textarea name="descripcion" class="form-control" ng-model="$ctrl.user.desc"  required></textarea>
+            <label for="nombre">nombre: </label>
+            <input name="nombre"  class="form-control " ng-model="$ctrl.tecnologia.nombre" required>
+
+          <label for="descripcion">descripcion: </label>
+          <textarea name="descripcion" class="form-control" ng-model="$ctrl.tecnologia.descripcion"  required></textarea>
         </div>
-        <button type="button" class="btn btn-primary" ng-click="$ctrl.update($ctrl.user)">SAVE</button>
+        <button type="button" class="btn btn-primary" ng-click="$ctrl.update($ctrl.tecnologia)">SAVE</button>
             <button type="button" ng-click="$ctrl.reset(form)" class="btn btn-primary" >RESET</button>
       </form>
+
+    <div class="">
+      <pre>$ctrl.tecnologia = {{$ctrl.tecnologia | json}}</pre>
+      <pre>$ctrl.original = {{$ctrl.original | json}}</pre>
+    </div>
   </div>
-  <div class="col-md-4"></div>
-</div>
-<br><br>
-    <div class="row">
-    <pre>$ctrl.user = {{$ctrl.user | json}}</pre>
-    <pre>$ctrl.master = {{$ctrl.master | json}}</pre>
+    <div class="col-md-2 col-xs-2"></div>
 </div>
