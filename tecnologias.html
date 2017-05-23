@@ -2,13 +2,14 @@
   <div class="col-md-2 col-xs-2"></div>
   <div class="col-md-8 col-xs-8">
   <h1 style="text-align: center">Tecnologias <small>Formulario</small></h1>
-      <form >
+      <form>
           <div class="form-group">
             <label for="nombre">nombre: </label>
-            <input name="nombre"  class="form-control " ng-model="$ctrl.tecnologia.nombre" required>
+            <input autofocus name="nombre"  class="form-control " ng-model="$ctrl.tecnologia.nombre" required>
+          
 
           <label for="descripcion">descripcion: </label>
-          <textarea name="descripcion" class="form-control" ng-model="$ctrl.tecnologia.descripcion"  required></textarea>
+          <textarea  name="descripcion" class="form-control" ng-model="$ctrl.tecnologia.descripcion"  required></textarea>
         </div>
         <button type="button" class="btn btn-primary" ng-click="$ctrl.update($ctrl.tecnologia)">SAVE</button>
             <button type="button" ng-click="$ctrl.reset(form)" class="btn btn-primary" >RESET</button>
