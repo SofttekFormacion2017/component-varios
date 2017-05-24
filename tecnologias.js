@@ -2,21 +2,35 @@ angular
   .module('ghr.varios', [])
   .component('ghrTecnologias', {
     templateUrl: '../bower_components/component-varios/tecnologias.html',
-    controller: controlTecnoController
+    controller: formularioTecnologiaController
   })
   .factory('tecnologiasFactory', function crearTecnologias() {
       // nombres y descripciones para crear las tecnologias con datos aleatorios
-      var nombres = ['java', 'javaScript', 'CSS', 'HTML', 'Angular', 'XML','C++','PHP','Pascal','Ajax','Assembly',
-      'Scheme','Arduino','Python','Forth','Swift','Cuda','Delphi', '.NET','Cobol','Visual Basic','WebDNA','Groovy',
-      'Smalltalk', 'Active Server Page','Scratch','Objective-C','TCL'];
-      var descripciones = ['descripcion1', 'descripcion2', 'descripcion3','descripcion4', 'descripcion5',
-      'descripcion6', 'descripcion7', 'descripcion8', 'descripcion9'];
+      var nombres = ['java', 'javaScript', 'CSS', 'HTML','Angular', 'XML','C++','PHP','Pascal','Ajax','Assembly',
+      'Scheme','Arduino','Python','Forth','Swift','Cuda','Delphi','.NET','Cobol','Visual Basic','WebDNA','Groovy',
+      'Smalltalk','Active Server Page','Scratch','Objective-C','TCL'];
+      var descripciones = ['muy usado','poco usado'];
       var arrayTecnologias = [];
       for (var i = 1; i < 200; i++) {
         arrayTecnologias.push(crearTecnologia(i));
         // enviamos la i como id de la tecnologia creada, llena el arrayTecnologias.
       }
-      return arrayTecnologias;
+
+      return {
+        getAll: function getAll(){
+          return angular.copy(arrayTecnologias);
+        },
+        getById: function getById(id){
+          var tecno;
+          id = parseInt(id);
+          for (i=0; (i<arrayTecnologias.length) && (tecno===undefined); i++){
+            if (arrayTecnologias[i].id === id){
+              tecno=arrayTecnologias[i];
+            }
+          }
+          return tecno;
+        }
+      };
 
     // creacion de un objeto tecnologia
     function crearTecnologia(i) {
@@ -28,7 +42,9 @@ angular
       return tecnologia;
     }
 
+
     // numero aleatorio para seleccionar un nombre y una descripcion de sus arrays.
+
     function aleatorio(rango) {
       return Math.floor(Math.random() * rango);
     }
@@ -43,7 +59,7 @@ angular
     controller: generarTecnologias
   })
   .component('eliminarTecnologiaModal', {
-      templateUrl: '../bower_components/component-varios/botonera.html',
+      templateUrl: '../bower_components/component-varios/eliminadoTecnologiaModal.html',
       bindings: {
         resolve: '<',
         close: '&',
@@ -69,17 +85,14 @@ angular
     }
   });
 
-function controlTecnoController($stateParams, tecnologiasFactory) {
+
+function formularioTecnologiaController($stateParams,tecnologiasFactory) {
   const vm = this;
-  console.log($stateParams);
-  console.log(tecnologiasFactory);
-  vm.original = findById($stateParams.id);
-  function findById(id){
-    for(var i = 0 ; i < tecnologiasFactory.length; i ++){
-      if(tecnologiasFactory[i].id==id)
-      return tecnologiasFactory[i]
-    }
-  }
+  //console.log($stateParams); Imprime por pantalla $stateParams
+  //console.log(tecnologiasFactory.getAll()); Imprime por pantalla la factoria de tecnologia en un objeto
+  //console.log(tecnologiasFactory.getById($stateParams.id)); Imprime por pantalla los valores de la tabla tecnologia
+  vm.tecnologia = tecnologiasFactory.getById($stateParams.id);
+
   // tecnologiasFactory.reduce(function(acc,v,i){
   // }, {})
 
@@ -94,12 +107,13 @@ function controlTecnoController($stateParams, tecnologiasFactory) {
     }
     vm.tecnologia = angular.copy(vm.original);
   };
-  vm.reset();
+  //vm.reset();
 }
 
-function generarTecnologias(tecnologiasFactory, $uibModal, $log, $document) {
+
+function generarTecnologias(tecnologiasFactory,$uibModal, $log, $document) {
   const vm = this;
-  vm.arrayTecnologias = tecnologiasFactory;
+  vm.arrayTecnologias = tecnologiasFactory.getAll();
   vm.totalItems = vm.arrayTecnologias.length;
   vm.currentPage = 1;
 
@@ -131,5 +145,4 @@ function generarTecnologias(tecnologiasFactory, $uibModal, $log, $document) {
       vm.arrayTecnologias.splice(vm.arrayTecnologias.indexOf(eliminado),1);
     });
   }
-
 }
