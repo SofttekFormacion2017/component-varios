@@ -15,20 +15,58 @@ angular
         arrayTecnologias.push(crearTecnologia(i));
         // enviamos la i como id de la tecnologia creada, llena el arrayTecnologias.
       }
-
+      function _getReferenceById(id){
+        var tecnologia;
+        for (i=0; (i<arrayTecnologias.length) && (tecnologia==undefined); i++){
+          if (arrayTecnologias[i].id == id){
+            tecnologia=arrayTecnologias[i];
+          }
+        }
+        return tecnologia;
+      }
       return {
+        //sistema CRUD de tecnologias
         getAll: function getAll(){
           return angular.copy(arrayTecnologias);
         },
-        getById: function getById(id){
-          var tecno;
-          id = parseInt(id);
-          for (i=0; (i<arrayTecnologias.length) && (tecno===undefined); i++){
-            if (arrayTecnologias[i].id === id){
-              tecno=arrayTecnologias[i];
+        create: function create(tecnologia){
+          tecnologia.id=arrayTecnologias.length+1;
+          arrayTecnologias.push(angular.copy(tecnologia));
+        },
+        /**
+         * [read description]
+         * @method read
+         * @param  {number} id id tecnologia
+         * @return {tecno}    [description]
+         */
+        read: function read(id){
+          return angular.copy(_getReferenceById(id));
+        },
+        update: function update (tecnologia){
+          if (!tecnologia.id){
+            throw 'el objeto carece de id y no se actualiza ' +JSON.stringify(tecnologia);
+          }
+          oldTecno=_getReferenceById(tecnologia.id);
+          if(oldTecno){
+            var indice = arrayTecnologias.indexOf(oldTecno);
+            var newTecno = arrayTecnologias[indice]=angular.copy(tecnologia);
+            return angular.copy(newTecno);
+          }
+          throw 'el objeto carece de id y no se actualiza ' +JSON.stringify(tecnologia);
+        },
+        delete: function _delete(tecnologia){
+          if(!tecnologia.id){
+            throw 'el objeto carece de id y no se borra' +JSON.stringify(tecnologia);;
+          }
+          oldTecno=_getReferenceById(tecnologia.id);
+          if(oldTecno){
+            var indice=arrayTecnologias.indexOf(oldTecno);
+            if(indice>-1){
+              arrayTecnologias.splice(indice, 1);
+            }else{
+              throw 'el objeto carece de id y no se borra' +JSON.stringify(tecnologia);
             }
           }
-          return tecno;
         }
       };
 
@@ -41,7 +79,6 @@ angular
       };
       return tecnologia;
     }
-
 
     // numero aleatorio para seleccionar un nombre y una descripcion de sus arrays.
 
@@ -88,17 +125,23 @@ angular
 
 function formularioTecnologiaController($stateParams,tecnologiasFactory) {
   const vm = this;
-  //console.log($stateParams); Imprime por pantalla $stateParams
-  //console.log(tecnologiasFactory.getAll()); Imprime por pantalla la factoria de tecnologia en un objeto
-  //console.log(tecnologiasFactory.getById($stateParams.id)); Imprime por pantalla los valores de la tabla tecnologia
-  vm.tecnologia = tecnologiasFactory.getById($stateParams.id);
+  console.log($stateParams); //Imprime por pantalla $stateParams
+  console.log(tecnologiasFactory.getAll()); //Imprime por pantalla la factoria de tecnologia en un objeto
+  console.log(tecnologiasFactory.read($stateParams.id)); //Imprime por pantalla los valores de la tabla tecnologia
+  vm.tecnologia = tecnologiasFactory.read($stateParams.id);
 
   // tecnologiasFactory.reduce(function(acc,v,i){
   // }, {})
 
   vm.update = function (user) {
-    vm.original = vm.tecnologia
-    // console.log(angular.copy(user));
+    //vm.original = vm.tecnologia;
+    //tecnologiasFactory.update(vm.tecnologia);
+    //console.log(angular.copy(user));
+    if(tecnologia.id && tecnologia.id==0){
+      tecnologiasFactory.update(vm.tecnologia);
+    }else{
+      tecnologiasFactory.create(vm.tecnologia);
+    }
   };
   vm.reset = function (form) {
     if (form) {
@@ -129,20 +172,15 @@ function generarTecnologias(tecnologiasFactory,$uibModal, $log, $document) {
       component: 'eliminarTecnologiaModal',
       resolve: {
         seleccionado: function () {
-          return id,nombre;
+          return id;
         }
 
       }
     });
 
-    modalInstance.result.then(function (selectedItem) {
-      vm.selected = selectedItem;
-      var eliminado;
-      for(var i = 0;i< vm.arrayTecnologias.length;i++){
-        if(vm.arrayTecnologias[i].id === selectedItem)
-        eliminado = vm.arrayTecnologias[i];
-      }
-      vm.arrayTecnologias.splice(vm.arrayTecnologias.indexOf(eliminado),1);
+    modalInstance.result.then(function(selectedItem) {
+      tecnologiasFactory.delete(tecnologiasFactory.read(selectedItem));
+      vm.arrayTecnologias = tecnologiasFactory.getAll();
     });
   }
 }
