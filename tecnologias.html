@@ -14,7 +14,7 @@
                 <label for="nombre">Nombre: </label>
                 <input required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ /+/./-]{0,}" class="form-control" name="nombre" ng-model="$ctrl.tecnologia.nombre" autofocus aria-describedby="helpBlock2">
                 <span ng-class="!form.nombre.$error.pattern ? 'oculto' : ''" class="help-block">Sólo puede incluir letras</span>
-                
+
             </div>
 
             <div class="input_content sin-margen form-group col-md-10 col-sm-3 container-fluid"
@@ -26,12 +26,14 @@
 
             </div>
 
-        <div class="col-md-10 col-sm-3">
+        <div class="col-md-offset-8  col-sm-3">
         <button type="button" class="btn btn-primary" ng-click="$ctrl.update($ctrl.tecnologia)"  ng-disabled="form.$invalid">Guardar</button>
 
             <button type="button" ng-click="$ctrl.reset(form)" class="btn btn-primary" >Reiniciar</button>
         </div>
 
+
+        
       </form>
 
     <div class="">

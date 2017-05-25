@@ -4,7 +4,9 @@ angular
     templateUrl: '../bower_components/component-varios/tecnologias.html',
     controller: formularioTecnologiaController
   })
-  .factory('tecnologiasFactory', function crearTecnologias() {
+  .constant('tecBaseUrl', 'http://localhost:3003/api/')
+  .constant('tecEntidad', 'tecnologias')
+  .factory('tecnologiasFactory', function crearTecnologias($http, tecBaseUrl, tecEntidad) {
       // nombres y descripciones para crear las tecnologias con datos aleatorios
     var nombres = ['java', 'javaScript', 'CSS', 'HTML', 'Angular', 'XML', 'C++', 'PHP', 'Pascal', 'Ajax', 'Assembly',
       'Scheme', 'Arduino', 'Python', 'Forth', 'Swift', 'Cuda', 'Delphi', '.NET', 'Cobol', 'Visual Basic', 'WebDNA', 'Groovy',
@@ -24,10 +26,20 @@ angular
       }
       return tecnologia;
     }
+
+    var serviceUrl = tecBaseUrl + tecEntidad;
     return {
         // sistema CRUD de tecnologias
       getAll: function getAll() {
-        return angular.copy(arrayTecnologias);
+        return $http({
+          method: 'GET',
+          url: serviceUrl
+        }).then(function onSuccess(response) {
+          return response.data;
+        },
+        function onFailirure(reason) {
+
+        });
       },
       create: function create(tecnologia) {
         console.log(tecnologia);
@@ -56,6 +68,7 @@ angular
         }
         throw 'el objeto carece de id y no se actualiza ' + JSON.stringify(tecnologia);
       },
+
       delete: function _delete(tecnologia) {
         if (!tecnologia.id) {
           throw 'el objeto carece de id y no se borra' + JSON.stringify(tecnologia);
@@ -70,6 +83,7 @@ angular
           }
         }
       }
+
     };
     // creacion de un objeto tecnologia
     function crearTecnologia(i) {
@@ -147,7 +161,10 @@ function formularioTecnologiaController($stateParams, tecnologiasFactory, $state
 }
 function generarTecnologias(tecnologiasFactory, $uibModal, $log, $document) {
   const vm = this;
-  vm.arrayTecnologias = tecnologiasFactory.getAll();
+  vm.arrayTecnologias = tecnologiasFactory.getAll().then(function onSuccess(response) {
+    vm.arrayTecnologias = response;
+  });
+
   vm.totalItems = vm.arrayTecnologias.length;
   vm.currentPage = 1;
   vm.setPage = function (pageNo) {
