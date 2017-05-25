@@ -1,11 +1,10 @@
 <div class="container-fluid">
   <h1 class="h1">Lista de Tecnologias</h1>
-  <div class="row form-group">
-    <div class="col-sm-offset-3 col-sm-3">
-      <input type="text" ng-model="buscar" class="form-control" placeholder="Buscar">
-    </div>
-    <div class="col-sm-offset-1 col-sm-1">
-      <a ui-sref="app.contactosFormulario"><button id="split-button" type="button" class="btn btn-primary">+</button></a>
+<div class="row form-group">
+    <div class="col-sm-offset-5 col-sm-5">
+      <input type="text"  ng-model="buscar" class="form-control" placeholder="Buscar"/>
+        <button ui-sref="app.contactosDetalle({id:0})" id="split-button" type="button" class="btn btn-primary">Añadir tecnologia +</button>
+
     </div>
 </div>
   <table class="table table-responsive table-striped">
@@ -18,19 +17,22 @@
         <th>Acción</th>
       </tr>
     </thead>
+
     <tr ng-repeat ="tecno in (tecnologia = ($ctrl.arrayTecnologias | filter:buscar)) |  orderBy: ($ctrl.reverse+$ctrl.orderByPropiedad) | limitTo:$ctrl.maxSize:($ctrl.currentPage-1)*$ctrl.maxSize track by tecno.id">
       <td ng-repeat="datosTecnologia in $ctrl.cabecera ">
         {{tecno[datosTecnologia]}}
       </td>
       <td class="col-md-3 col-xs-3">
         <div class="btn-group" uib-dropdown>
-              <button id="split-button" type="button" class="btn btn-primary" ui-sref="app.contactosDetalle({id: tecno.id})">Ver</button>
+              <button id="split-button" type="button" class="btn btn-primary" ui-sref="app.contactosDetalle({id: tecno.id})">
+
+              Ver</button>
               <button type="button" class="btn btn-primary " uib-dropdown-toggle>
                     <span class="caret"></span>
                     <span class="sr-only">Split button!</span>
                 </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-              <li role="menuitem"><a href="#" ui-sref="app.contactosDetalle({id: tecno.id})">Ver</a></li>
+              <li role="menuitem"><a href="#"ui-sref="app.contactosDetalle({id: tecno.id})">Ver</a></li>
               <li class="divider"></li>
               <li role="menuitem"><a href="#">Editar</a></li>
               <li role="menuitem" ><a href="#" ng-click="$ctrl.open(tecno.id,tecno.nombre)">Borrar</a>
@@ -40,6 +42,7 @@
       </td>
     </tr>
   </table>
+
   <div>
     <ul uib-pagination total-items="tecnologia.length" ng-model="$ctrl.currentPage" max-size="5"class="pagination" boundary-link-numbers="true"></ul>
   </div>
