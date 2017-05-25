@@ -8,10 +8,10 @@
 
 
             <div class="input_content sin-margen form-group col-md-4 col-sm-2 container-fluid"
-                ng-class="{ 'has-error' : form.nombre.$invalid && !form.nombre.$pristine }">
+                ng-class="{ 'has-error' : form.nombre.$invalid && !form.nombre.$pristine  }">
                 <label for="nombre">Nombre : </label>
-                <input required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ ]{0,}" class="form-control" name="nombre" ng-model="$ctrl.tecnologia.nombre" autofocus aria-describedby="helpBlock2">
-                <span ng-class="!form.nombre.$error.pattern ? 'oculto' : ''" class="help-block">Sólo puede incluir letras</span>
+                <input required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ/+/./-]{0,}" class="form-control" name="nombre" ng-model="$ctrl.tecnologia.nombre" autofocus aria-describedby="helpBlock2">
+                <span ng-show="form.nombre.$error.pattern ? 'oculto' : ''" class="help-block">Sólo puede incluir letras</span>
             </div>
 
             <br><br><br>
