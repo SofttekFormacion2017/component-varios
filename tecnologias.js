@@ -81,11 +81,15 @@ angular
       //   return angular.copy(_getReferenceById(id));
       // },
 
+      // UTILIZAR PATCH
+
       update: function update(tecnologia, selectedItem) {
         return $http({
-          method: 'PUT',
+          method: 'PATCH',
           url: serviceUrl + '/' + selectedItem,
           data: tecnologia
+        }).then(function onSuccess(response) {
+          return response.data;
         });
       },
       //
