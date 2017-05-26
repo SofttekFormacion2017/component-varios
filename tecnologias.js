@@ -41,20 +41,47 @@ angular
 
         });
       },
+
       create: function create(tecnologia) {
-        console.log(tecnologia);
-        tecnologia.id = arrayTecnologias.length + 1;
-        arrayTecnologias.push(angular.copy(tecnologia));
+        return $http({
+          method: 'POST',
+          url: serviceUrl
+        });
       },
+      // create: function create(tecnologia) {
+      //   console.log(tecnologia);
+      //   tecnologia.id = arrayTecnologias.length + 1;
+      //   arrayTecnologias.push(angular.copy(tecnologia));
+      // },
+
         /**
          * [read description]
          * @method read
          * @param  {number} id id tecnologia
          * @return {tecno}    [description]
          */
+
       read: function read(id) {
+        return $http({
+          method: 'GET',
+          url: serviceUrl + '/' + id
+        }).then(function onSuccess(response) {
+          return response.data;
+        });
         return angular.copy(_getReferenceById(id));
       },
+
+      // read: function read(id) {
+      //   return angular.copy(_getReferenceById(id));
+      // },
+
+      // update: function update(tecnologia) {
+      //   return $http({
+      //     method: 'POST',
+      //     url: serviceUrl
+      //   });
+      // },
+      //
       update: function update(tecnologia) {
         if (!tecnologia.id) {
           console.log(tecnologia);
@@ -69,20 +96,26 @@ angular
         throw 'el objeto carece de id y no se actualiza ' + JSON.stringify(tecnologia);
       },
 
-      delete: function _delete(tecnologia) {
-        if (!tecnologia.id) {
-          throw 'el objeto carece de id y no se borra' + JSON.stringify(tecnologia);
-        }
-        oldTecno = _getReferenceById(tecnologia.id);
-        if (oldTecno) {
-          var indice = arrayTecnologias.indexOf(oldTecno);
-          if (indice > -1) {
-            arrayTecnologias.splice(indice, 1);
-          } else {
-            throw 'el objeto carece de id y no se borra' + JSON.stringify(tecnologia);
-          }
-        }
+      delete: function _delete(selectedItem) {
+        return $http({
+          method: 'DELETE',
+          url: serviceUrl + '/' + selectedItem
+        });
       }
+      // delete: function _delete(tecnologia) {
+      //   if (!tecnologia.id) {
+      //     throw 'el objeto carece de id y no se borra' + JSON.stringify(tecnologia);
+      //   }
+      //   oldTecno = _getReferenceById(tecnologia.id);
+      //   if (oldTecno) {
+      //     var indice = arrayTecnologias.indexOf(oldTecno);
+      //     if (indice > -1) {
+      //       arrayTecnologias.splice(indice, 1);
+      //     } else {
+      //       throw 'el objeto carece de id y no se borra' + JSON.stringify(tecnologia);
+      //     }
+      //   }
+      // }
 
     };
     // creacion de un objeto tecnologia
@@ -143,6 +176,8 @@ function formularioTecnologiaController($stateParams, tecnologiasFactory, $state
     console.log('tecnologia id que le paso:' + $stateParams.id);
     if ($stateParams.id == 0) {
     //   tecnologia.id = tecnologiasFactory.getAll().length+1;
+      console.log('voy a crear');
+      console.log(vm.tecnologia);
       tecnologiasFactory.create(vm.tecnologia);
       $state.go($state.current, {id: vm.tecnologia.id});
     } else {
@@ -152,29 +187,41 @@ function formularioTecnologiaController($stateParams, tecnologiasFactory, $state
   };
 
   vm.reset = function (form) {
-    if (form) {
-      form.$setPristine();
-      form.$setUntouched();
-    }
     vm.tecnologia = angular.copy(vm.original);
   };
+  if ($stateParams.id != 0) {
+    vm.original = tecnologiasFactory.read($stateParams.id).then(
+        function (tecnologia) {
+          vm.tecnologia = tecnologia;
+        }
+      );
+  }
+
+  // vm.reset();
+  //
+  // if ($stateParams != 0) {
+  //   tecnologiasFactory.read($stateParams.id).then(
+  //     function (tecnologia) {
+  //       vm.original = vm.tecnologia = tecnologia;
+  //     });
+  // }
 }
+
 function generarTecnologias(tecnologiasFactory, $uibModal, $log, $document) {
   const vm = this;
-  vm.arrayTecnologias = tecnologiasFactory.getAll().then(function onSuccess(response) {
+  tecnologiasFactory.getAll().then(function onSuccess(response) {
     vm.arrayTecnologias = response;
+    vm.tecnologia = vm.arrayTecnologias;
   });
 
-  vm.totalItems = vm.arrayTecnologias.length;
   vm.currentPage = 1;
   vm.setPage = function (pageNo) {
     vm.currentPage = pageNo;
   };
+
   vm.maxSize = 10;  // Elementos mostrados por página
-  vm.animationsEnabled = true;
   vm.open = function (id, nombre) {
     var modalInstance = $uibModal.open({
-      animation: vm.animationsEnabled,
       component: 'eliminarTecnologiaModal',
       resolve: {
         seleccionado: function () {
@@ -182,9 +229,15 @@ function generarTecnologias(tecnologiasFactory, $uibModal, $log, $document) {
         }
       }
     });
+
     modalInstance.result.then(function (selectedItem) {
-      tecnologiasFactory.delete(tecnologiasFactory.read(selectedItem));
+      console.log('selectedItem -->' + selectedItem);
       vm.arrayTecnologias = tecnologiasFactory.getAll();
+      tecnologiasFactory.delete(selectedItem).then(function () {
+        tecnologiasFactory.getAll().then(function (tecnologias) {
+          vm.arrayTecnologias = tecnologias;
+        });
+      });
     });
   };
 }
