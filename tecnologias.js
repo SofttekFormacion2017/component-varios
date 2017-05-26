@@ -45,7 +45,13 @@ angular
       create: function create(tecnologia) {
         return $http({
           method: 'POST',
-          url: serviceUrl
+          url: serviceUrl,
+          data: tecnologia
+        }).then(function onSuccess(response) {
+          return response.data;
+        },
+        function onFailirure(reason) {
+
         });
       },
       // create: function create(tecnologia) {
@@ -75,26 +81,27 @@ angular
       //   return angular.copy(_getReferenceById(id));
       // },
 
-      // update: function update(tecnologia) {
-      //   return $http({
-      //     method: 'POST',
-      //     url: serviceUrl
-      //   });
-      // },
-      //
-      update: function update(tecnologia) {
-        if (!tecnologia.id) {
-          console.log(tecnologia);
-          throw 'el objeto carece de id y no se actualiza' + JSON.stringify(tecnologia);
-        }
-        oldTecno = _getReferenceById(tecnologia.id);
-        if (oldTecno) {
-          var indice = arrayTecnologias.indexOf(oldTecno);
-          var newTecno = arrayTecnologias[indice] = angular.copy(tecnologia);
-          return angular.copy(newTecno);
-        }
-        throw 'el objeto carece de id y no se actualiza ' + JSON.stringify(tecnologia);
+      update: function update(tecnologia, selectedItem) {
+        return $http({
+          method: 'PUT',
+          url: serviceUrl + '/' + selectedItem,
+          data: tecnologia
+        });
       },
+      //
+      // update: function update(tecnologia) {
+      //   if (!tecnologia.id) {
+      //     console.log(tecnologia);
+      //     throw 'el objeto carece de id y no se actualiza' + JSON.stringify(tecnologia);
+      //   }
+      //   oldTecno = _getReferenceById(tecnologia.id);
+      //   if (oldTecno) {
+      //     var indice = arrayTecnologias.indexOf(oldTecno);
+      //     var newTecno = arrayTecnologias[indice] = angular.copy(tecnologia);
+      //     return angular.copy(newTecno);
+      //   }
+      //   throw 'el objeto carece de id y no se actualiza ' + JSON.stringify(tecnologia);
+      // },
 
       delete: function _delete(selectedItem) {
         return $http({
@@ -166,23 +173,21 @@ angular
 function formularioTecnologiaController($stateParams, tecnologiasFactory, $state) {
   const vm = this;
   console.log($stateParams); // Imprime por pantalla $stateParams
-  console.log(tecnologiasFactory.getAll()); // Imprime por pantalla la factoria de tecnologia en un objeto
-  console.log(tecnologiasFactory.read($stateParams.id)); // Imprime por pantalla los valores de la tabla tecnologia
-  vm.tecnologia = tecnologiasFactory.read($stateParams.id);
   vm.update = function (user) {
   //   var x = (tecnologiasFactory.getAll().length)+1;
   //   console.log('ultimo objeto:' + tecnologia.id+'=' + = (tecnologiasFactory.getAll().length)+1;);
   //   console.log('longitudad del array:'+ tecnologiasFactory.getAll().length);
     console.log('tecnologia id que le paso:' + $stateParams.id);
     if ($stateParams.id == 0) {
-    //   tecnologia.id = tecnologiasFactory.getAll().length+1;
-      console.log('voy a crear');
-      console.log(vm.tecnologia);
-      tecnologiasFactory.create(vm.tecnologia);
-      $state.go($state.current, {id: vm.tecnologia.id});
+      delete $stateParams.id;
+      tecnologiasFactory.create(vm.tecnologia).then(function (tecnologia) {
+        $state.go($state.current, {id: tecnologia.id});
+      });
     } else {
       console.log('hola');
-      tecnologiasFactory.update(vm.tecnologia);
+      tecnologiasFactory.update(vm.tecnologia, $stateParams.id).then(function (tecnologia) {
+
+      });
     }
   };
 
