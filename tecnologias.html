@@ -12,6 +12,7 @@
                             'has-error' : form.nombre.$invalid && !form.nombre.$pristine,
                             'has-success'  : form.nombre.$valid} ">
                 <label for="nombre">Nombre: </label>
+
                 <input required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ /+/./-]{0,}" class="form-control" name="nombre" ng-model="$ctrl.tecnologia.nombre" autofocus aria-describedby="helpBlock2">
                 <span ng-class="!form.nombre.$error.pattern ? 'oculto' : ''" class="help-block">Sólo puede incluir letras</span>
 
@@ -23,7 +24,7 @@
                 <label for="descripcion">Descripcion: </label>
                 <textarea required ng-maxlength="50" class="form-control" name="descripcion" ng-model="$ctrl.tecnologia.descripcion" autofocus aria-describedby="helpBlock2"></textarea>
                 <span ng-class="!form.descripcion.$error.maxlength ? 'oculto' : ''" class="help-block">máximo 50 caracteres</span>
-
+                
             </div>
 
         <div class="col-md-offset-8  col-sm-3">
@@ -33,7 +34,7 @@
         </div>
 
 
-        
+
       </form>
 
     <div class="">
