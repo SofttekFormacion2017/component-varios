@@ -8,24 +8,24 @@ angular
   .constant('tecEntidad', 'tecnologias')
   .factory('tecnologiasFactory', function crearTecnologias($http, tecBaseUrl, tecEntidad) {
       // nombres y descripciones para crear las tecnologias con datos aleatorios
-    var nombres = ['java', 'javaScript', 'CSS', 'HTML', 'Angular', 'XML', 'C++', 'PHP', 'Pascal', 'Ajax', 'Assembly',
-      'Scheme', 'Arduino', 'Python', 'Forth', 'Swift', 'Cuda', 'Delphi', '.NET', 'Cobol', 'Visual Basic', 'WebDNA', 'Groovy',
-      'Smalltalk', 'Active Server Page', 'Scratch', 'Objective-C', 'TCL'];
-    var descripciones = ['muy usado', 'poco usado'];
-    var arrayTecnologias = [];
-    for (var i = 1; i < 200; i++) {
-      arrayTecnologias.push(crearTecnologia(i));
-        // enviamos la i como id de la tecnologia creada, llena el arrayTecnologias.
-    }
-    function _getReferenceById(id) {
-      var tecnologia;
-      for (i = 0; (i < arrayTecnologias.length) && (tecnologia == undefined); i++) {
-        if (arrayTecnologias[i].id == id) {
-          tecnologia = arrayTecnologias[i];
-        }
-      }
-      return tecnologia;
-    }
+    // var nombres = ['java', 'javaScript', 'CSS', 'HTML', 'Angular', 'XML', 'C++', 'PHP', 'Pascal', 'Ajax', 'Assembly',
+    //   'Scheme', 'Arduino', 'Python', 'Forth', 'Swift', 'Cuda', 'Delphi', '.NET', 'Cobol', 'Visual Basic', 'WebDNA', 'Groovy',
+    //   'Smalltalk', 'Active Server Page', 'Scratch', 'Objective-C', 'TCL'];
+    // var descripciones = ['muy usado', 'poco usado'];
+    // var arrayTecnologias = [];
+    // for (var i = 1; i < 200; i++) {
+    //   arrayTecnologias.push(crearTecnologia(i));
+    //     // enviamos la i como id de la tecnologia creada, llena el arrayTecnologias.
+    // }
+    // function _getReferenceById(id) {
+    //   var tecnologia;
+    //   for (i = 0; (i < arrayTecnologias.length) && (tecnologia == undefined); i++) {
+    //     if (arrayTecnologias[i].id == id) {
+    //       tecnologia = arrayTecnologias[i];
+    //     }
+    //   }
+    //   return tecnologia;
+    // }
 
     var serviceUrl = tecBaseUrl + tecEntidad;
     return {
@@ -83,10 +83,11 @@ angular
 
       // UTILIZAR PATCH
 
-      update: function update(tecnologia, selectedItem) {
+      update: function update(tecnologia) {
+        console.log(tecnologia);
         return $http({
           method: 'PATCH',
-          url: serviceUrl + '/' + selectedItem,
+          url: serviceUrl + '/' + tecnologia.id,
           data: tecnologia
         }).then(function onSuccess(response) {
           return response.data;
@@ -175,23 +176,22 @@ angular
     }
   });
 function formularioTecnologiaController($stateParams, tecnologiasFactory, $state) {
-  const vm = this;
-  console.log($stateParams); // Imprime por pantalla $stateParams
+  const vm = this;// Imprime por pantalla $stateParams
   vm.update = function (user) {
   //   var x = (tecnologiasFactory.getAll().length)+1;
   //   console.log('ultimo objeto:' + tecnologia.id+'=' + = (tecnologiasFactory.getAll().length)+1;);
   //   console.log('longitudad del array:'+ tecnologiasFactory.getAll().length);
-    console.log('tecnologia id que le paso:' + $stateParams.id);
     if ($stateParams.id == 0) {
+      console.log('creando nueva tecnologia');
       delete $stateParams.id;
       tecnologiasFactory.create(vm.tecnologia).then(function (tecnologia) {
         $state.go($state.current, {id: tecnologia.id});
       });
-    } else {
-      console.log('hola');
-      tecnologiasFactory.update(vm.tecnologia, $stateParams.id).then(function (tecnologia) {
-
+    }
+    if (vm.form.$dirty === true) {
+      tecnologiasFactory.update(vm.tecnologia).then(function (tecnologia) {
       });
+      console.log('actualizando tecnologia');
     }
   };
 
