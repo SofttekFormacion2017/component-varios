@@ -43,6 +43,7 @@ angular
       },
 
       create: function create(tecnologia) {
+        console.log('funcion crear '+ tecnologia.nombre);
         return $http({
           method: 'POST',
           url: serviceUrl,
@@ -186,12 +187,16 @@ function formularioTecnologiaController($stateParams, tecnologiasFactory, $state
       delete $stateParams.id;
       tecnologiasFactory.create(vm.tecnologia).then(function (tecnologia) {
         $state.go($state.current, {id: tecnologia.id});
+        // toastr.success('Tecnologia creada!', 'correctamente!');
       });
     }
     if (vm.form.$dirty === true) {
       tecnologiasFactory.update(vm.tecnologia).then(function (tecnologia) {
       });
       console.log('actualizando tecnologia');
+    }
+    else{
+      console.log('no ha habido cambios');
     }
   };
 
