@@ -1,32 +1,35 @@
 <div class="container-fluid row">
   <div class="col-md-2 col-xs-2"></div>
-  <div class="col-md-8 col-xs-8">
+  <div class="container-fluid row">
+  <div class="col-md-2 col-xs-2"></div>
+  <div class="col-md-9 col-xs-9">
   <h1 style="text-align: center">Tecnologias <small>Formulario</small></h1>
       <form name="form" >
           <div class="form-group has-feedback">
-
-
-
-            <div class="input_content sin-margen form-group col-md-4 col-sm-2 container-fluid"
-                ng-class="{ 'has-error' : form.nombre.$invalid && !form.nombre.$pristine  }">
-                <label for="nombre">Nombre : </label>
-                <input required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ/+/./-]{0,}" class="form-control" name="nombre" ng-model="$ctrl.tecnologia.nombre" autofocus aria-describedby="helpBlock2">
-                <span ng-show="form.nombre.$error.pattern ? 'oculto' : ''" class="help-block">Sólo puede incluir letras</span>
+            <div class="input_content sin-margen form-group col-md-10 col-sm-3 container-fluid"
+                ng-class="{ '' : $ctrl.tecnologia.nombre ==='',
+                            'has-error' : form.nombre.$invalid && !form.nombre.$pristine,
+                            'has-success'  : form.nombre.$valid} ">
+                <label for="nombre">Nombre: </label>
+                <input required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ /+/./-]{0,}" class="form-control" name="nombre" ng-model="$ctrl.tecnologia.nombre" autofocus aria-describedby="helpBlock2">
+                <span ng-class="!form.nombre.$error.pattern ? 'oculto' : ''" class="help-block">Sólo puede incluir letras</span>
             </div>
-
-            <br><br><br>
-            <label class="control-label col-sm-3" for="descripcion">descripcion: </label>
-            <div class="col-sm-9">
-                <textarea type="text" class="form-control" id="descripcion" aria-describedby="inputSuccess3Status" ng-model="$ctrl.tecnologia.descripcion" required></textarea>
+            <div class="input_content sin-margen form-group col-md-10 col-sm-3 container-fluid"
+                ng-class="{ 'has-error' : form.descripcion.$invalid && !form.descripcion.$pristine,
+                            'has-success'  : form.descripcion.$valid} ">
+                <label for="descripcion">Descripcion: </label>
+                <textarea required ng-maxlength="50" class="form-control" name="descripcion" ng-model="$ctrl.tecnologia.descripcion" autofocus aria-describedby="helpBlock2"></textarea>
+                <span ng-class="!form.descripcion.$error.maxlength ? 'oculto' : ''" class="help-block">máximo 50 caracteres</span>
             </div>
-        </div>
+        <div class="col-md-offset-8  col-sm-3">
         <button type="button" class="btn btn-primary" ng-click="$ctrl.update($ctrl.tecnologia)"  ng-disabled="form.$invalid">Guardar</button>
-            <button type="button" ng-click="$ctrl.reset(form)" class="btn btn-primary" >Reiniciar</button>
-      </form>
 
+            <button type="button" ng-click="$ctrl.reset(form)" class="btn btn-primary" >Reiniciar</button>
+        </div>
+      </form>
     <div class="">
-      <pre>$ctrl.tecnologia = {{$ctrl.tecnologia | json}}</pre>
+      <pre> $ctrl.tecnologia = {{$ctrl.tecnologia | json}} </pre>
     </div>
-  </div>
-    <div class="col-md-2 col-xs-2"></div>
+ </div>
+   <div class="col-md-5 col-xs-5"></div>
 </div>
