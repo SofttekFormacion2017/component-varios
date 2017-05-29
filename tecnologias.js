@@ -6,7 +6,7 @@ angular
   })
   .constant('tecBaseUrl', 'http://localhost:3003/api/')
   .constant('tecEntidad', 'tecnologias')
-  .factory('tecnologiasFactory', function crearTecnologias($http, tecBaseUrl, tecEntidad) {
+  .factory('tecnologiasFactory', function crearTecnologias(toastr,$http, tecBaseUrl, tecEntidad) {
       // nombres y descripciones para crear las tecnologias con datos aleatorios
     // var nombres = ['java', 'javaScript', 'CSS', 'HTML', 'Angular', 'XML', 'C++', 'PHP', 'Pascal', 'Ajax', 'Assembly',
     //   'Scheme', 'Arduino', 'Python', 'Forth', 'Swift', 'Cuda', 'Delphi', '.NET', 'Cobol', 'Visual Basic', 'WebDNA', 'Groovy',
@@ -43,12 +43,12 @@ angular
       },
 
       create: function create(tecnologia) {
-        console.log('funcion crear '+ tecnologia.nombre);
         return $http({
           method: 'POST',
           url: serviceUrl,
           data: tecnologia
         }).then(function onSuccess(response) {
+          toastr.success('Creada correctamente!',tecnologia.nombre);
           return response.data;
         },
         function onFailirure(reason) {
@@ -176,7 +176,7 @@ angular
       };
     }
   });
-function formularioTecnologiaController($stateParams, tecnologiasFactory, $state) {
+function formularioTecnologiaController(toastr,$stateParams, tecnologiasFactory, $state) {
   const vm = this;// Imprime por pantalla $stateParams
   vm.update = function (user) {
   //   var x = (tecnologiasFactory.getAll().length)+1;
@@ -189,15 +189,17 @@ function formularioTecnologiaController($stateParams, tecnologiasFactory, $state
         $state.go($state.current, {id: tecnologia.id});
         // toastr.success('Tecnologia creada!', 'correctamente!');
       });
+    }else{
+      if (vm.form.$dirty === true) {
+        tecnologiasFactory.update(vm.tecnologia).then(function (tecnologia) {
+        });
+        console.log('actualizando tecnologia');
+      }
+      else{
+        toastr.info('no ha habido cambios', 'Informacion');
+      }
     }
-    if (vm.form.$dirty === true) {
-      tecnologiasFactory.update(vm.tecnologia).then(function (tecnologia) {
-      });
-      console.log('actualizando tecnologia');
-    }
-    else{
-      console.log('no ha habido cambios');
-    }
+
   };
 
   vm.reset = function (form) {
