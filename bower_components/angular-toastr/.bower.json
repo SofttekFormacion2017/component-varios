@@ -1,0 +1,11 @@
+{
+  "name": "angular-toastr",
+  "_cacheHeaders": {
+    "Content-Type": "text/html; charset=utf-8"
+  },
+  "main": "index",
+  "_source": "https://github.com/Foxandxss/angular-toastr",
+  "_target": "*",
+  "_originalSource": "https://github.com/Foxandxss/angular-toastr",
+  "_direct": true
+}
