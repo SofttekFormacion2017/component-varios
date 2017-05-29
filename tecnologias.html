@@ -2,39 +2,32 @@
   <div class="col-md-2 col-xs-2"></div>
   <div class="col-md-8 col-xs-8">
   <h1 style="text-align: center">Tecnologias <small>Formulario</small></h1>
-      <form name="form" >
+      <form name="$ctrl.form" >
           <div class="form-group has-feedback">
 
 
 
             <div class="input_content sin-margen form-group col-md-10 col-sm-3 container-fluid"
                 ng-class="{ '' : $ctrl.tecnologia.nombre ==='',
-                            'has-error' : form.nombre.$invalid && !form.nombre.$pristine,
-                            'has-success'  : form.nombre.$valid} ">
+                            'has-error' : $ctrl.form.nombre.$invalid && !$ctrl.form.nombre.$pristine,
+                            'has-success'  : $ctrl.form.nombre.$valid} ">
                 <label for="nombre">Nombre: </label>
-
                 <input required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ /+/./-]{0,}" class="form-control" name="nombre" ng-model="$ctrl.tecnologia.nombre" autofocus aria-describedby="helpBlock2">
-                <span ng-class="!form.nombre.$error.pattern ? 'oculto' : ''" class="help-block">Sólo puede incluir letras</span>
-
+                <span ng-class="!$ctrl.form.nombre.$error.pattern ? 'oculto' : ''" class="help-block">Sólo puede incluir letras</span>
             </div>
-
             <div class="input_content sin-margen form-group col-md-10 col-sm-3 container-fluid"
-                ng-class="{ 'has-error' : form.descripcion.$invalid && !form.descripcion.$pristine,
-                            'has-success'  : form.descripcion.$valid} ">
+                ng-class="{ 'has-error' : $ctrl.form.descripcion.$invalid && !$ctrl.form.descripcion.$pristine,
+                            'has-success'  : $ctrl.form.descripcion.$valid} ">
                 <label for="descripcion">Descripcion: </label>
                 <textarea required ng-maxlength="50" class="form-control" name="descripcion" ng-model="$ctrl.tecnologia.descripcion" autofocus aria-describedby="helpBlock2"></textarea>
-                <span ng-class="!form.descripcion.$error.maxlength ? 'oculto' : ''" class="help-block">máximo 50 caracteres</span>
-                
+                <span ng-class="!$ctrl.form.descripcion.$error.maxlength ? 'oculto' : ''" class="help-block">máximo 50 caracteres</span>
+
             </div>
-
         <div class="col-md-offset-8  col-sm-3">
-        <button type="button" class="btn btn-primary" ng-click="$ctrl.update($ctrl.tecnologia)"  ng-disabled="form.$invalid">Guardar</button>
+        <button type="button" class="btn btn-primary" ng-click="$ctrl.update($ctrl.tecnologia,$ctrl.$ctrl.form)"  ng-disabled="$ctrl.form.$invalid">Guardar</button>
 
-            <button type="button" ng-click="$ctrl.reset(form)" class="btn btn-primary" >Reiniciar</button>
+            <button type="button" ng-click="$ctrl.reset($ctrl.form)" class="btn btn-primary" >Reiniciar</button>
         </div>
-
-
-
       </form>
 
     <div class="">
