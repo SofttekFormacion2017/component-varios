@@ -20,15 +20,16 @@
                 ng-class="{ 'has-error' : $ctrl.form.descripcion.$invalid && !$ctrl.form.descripcion.$pristine,
                             'has-success'  : $ctrl.form.descripcion.$valid} ">
                 <label for="descripcion">Descripcion: </label>
-                <textarea ng-if="$ctrl.mode === 'edit'" required ng-maxlength="50" class="form-control" name="descripcion" ng-model="$ctrl.tecnologia.descripcion" autofocus aria-describedby="helpBlock2"></textarea>
+                <input ng-if="$ctrl.mode === 'edit'" required ng-maxlength="50" class="form-control" name="descripcion" ng-model="$ctrl.tecnologia.descripcion" autofocus aria-describedby="helpBlock2"></textarea>
                 <span ng-if="$ctrl.mode === 'view'" class="form-control">{{$ctrl.tecnologia.descripcion}}</span>
                 <span ng-class="!$ctrl.form.descripcion.$error.maxlength ? 'oculto' : ''" class="help-block">máximo 50 caracteres</span>
 
             </div>
         <div class="col-md-offset-8  col-sm-3">
-        <button type="button" class="btn btn-primary" ng-click="$ctrl.update($ctrl.tecnologia,$ctrl.$ctrl.form)"  ng-disabled="$ctrl.form.$invalid">Guardar</button>
-
-            <button type="button" ng-click="$ctrl.reset($ctrl.form)" class="btn btn-primary" >Reiniciar</button>
+        <button ng-if="$ctrl.mode === 'edit'"type="button" class="btn btn-primary" ng-click="$ctrl.update($ctrl.tecnologia,$ctrl.$ctrl.form)"  ng-disabled="$ctrl.form.$invalid">Guardar</button>
+        <button ng-if="$ctrl.mode === 'edit'"type="button" ng-click="$ctrl.reset($ctrl.form)" class="btn btn-primary" >Reiniciar</button>
+        <button class="btn btn-primary"ng-if="$ctrl.mode === 'view'" type="submit" ng-click="$ctrl.edit()">Editar</button>
+        <button class="btn btn-primary"ng-if="$ctrl.mode === 'edit'" type="submit" ng-click="$ctrl.noEdit()">Cancelar Edicion</button>
         </div>
       </form>
 

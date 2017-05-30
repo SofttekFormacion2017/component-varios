@@ -192,6 +192,12 @@ function formularioTecnologiaController(toastr, $stateParams, tecnologiasFactory
       });
     vm.mode = $stateParams.mode;
   };
+  vm.noEdit = function () {
+    $state.go($state.current,
+      {
+        mode: 'view'
+      });
+  };
   vm.update = function (user) {
   //   var x = (tecnologiasFactory.getAll().length)+1;
   //   console.log('ultimo objeto:' + tecnologia.id+'=' + = (tecnologiasFactory.getAll().length)+1;);
