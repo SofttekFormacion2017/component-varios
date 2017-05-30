@@ -6,7 +6,7 @@ angular
   })
   .constant('tecBaseUrl', 'http://localhost:3003/api/')
   .constant('tecEntidad', 'tecnologias')
-  .factory('tecnologiasFactory', function crearTecnologias(toastr,$http, tecBaseUrl, tecEntidad) {
+  .factory('tecnologiasFactory', function crearTecnologias(toastr, $http, tecBaseUrl, tecEntidad) {
       // nombres y descripciones para crear las tecnologias con datos aleatorios
     // var nombres = ['java', 'javaScript', 'CSS', 'HTML', 'Angular', 'XML', 'C++', 'PHP', 'Pascal', 'Ajax', 'Assembly',
     //   'Scheme', 'Arduino', 'Python', 'Forth', 'Swift', 'Cuda', 'Delphi', '.NET', 'Cobol', 'Visual Basic', 'WebDNA', 'Groovy',
@@ -37,8 +37,9 @@ angular
         }).then(function onSuccess(response) {
           return response.data;
         },
-        function onFailirure(reason) {
-
+        function onFailure(reason) {
+          toastr.error('No se ha podido realizar la operacion, por favor compruebe su conexion a internet e intentelo más tarde.', 'Error');
+          deferred.reject(reason);
         });
       },
 
@@ -48,7 +49,7 @@ angular
           url: serviceUrl,
           data: tecnologia
         }).then(function onSuccess(response) {
-          toastr.success('Creada correctamente!',tecnologia.nombre);
+          toastr.success('Creada correctamente!', tecnologia.nombre);
           return response.data;
         },
         function onFailirure(reason) {
@@ -91,8 +92,13 @@ angular
           url: serviceUrl + '/' + tecnologia.id,
           data: tecnologia
         }).then(function onSuccess(response) {
+          toastr.success('Actualizado correctamente!', tecnologia.nombre);
           return response.data;
-        });
+        },
+          function onFailure(reason) {
+            toastr.error('No se ha podido realizar la operacion, por favor compruebe su conexion a internet e intentelo más tarde.', 'Error');
+            deferred.reject(reason);
+          });
       },
       //
       // update: function update(tecnologia) {
@@ -176,8 +182,16 @@ angular
       };
     }
   });
-function formularioTecnologiaController(toastr,$stateParams, tecnologiasFactory, $state) {
+function formularioTecnologiaController(toastr, $stateParams, tecnologiasFactory, $state) {
   const vm = this;// Imprime por pantalla $stateParams
+  vm.mode = $stateParams.mode;
+  vm.edit = function () {
+    $state.go($state.current,
+      {
+        mode: 'edit'
+      });
+    vm.mode = $stateParams.mode;
+  };
   vm.update = function (user) {
   //   var x = (tecnologiasFactory.getAll().length)+1;
   //   console.log('ultimo objeto:' + tecnologia.id+'=' + = (tecnologiasFactory.getAll().length)+1;);
@@ -186,20 +200,19 @@ function formularioTecnologiaController(toastr,$stateParams, tecnologiasFactory,
       console.log('creando nueva tecnologia');
       delete $stateParams.id;
       tecnologiasFactory.create(vm.tecnologia).then(function (tecnologia) {
-        $state.go($state.current, {id: tecnologia.id});
+        $state.go($state.current, {
+          id: tecnologia.id,
+          mode: 'read'
+        });
         // toastr.success('Tecnologia creada!', 'correctamente!');
       });
-    }else{
-      if (vm.form.$dirty === true) {
-        tecnologiasFactory.update(vm.tecnologia).then(function (tecnologia) {
-        });
-        console.log('actualizando tecnologia');
-      }
-      else{
-        toastr.info('no ha habido cambios', 'Informacion');
-      }
+    } else if (vm.form.$dirty === true) {
+      tecnologiasFactory.update(vm.tecnologia).then(function (tecnologia) {
+      });
+      console.log('actualizando tecnologia');
+    } else {
+      toastr.info('no ha habido cambios', 'Informacion');
     }
-
   };
 
   vm.reset = function (form) {
@@ -223,7 +236,7 @@ function formularioTecnologiaController(toastr,$stateParams, tecnologiasFactory,
   // }
 }
 
-function generarTecnologias(tecnologiasFactory, $uibModal, $log, $document) {
+function generarTecnologias(toastr, tecnologiasFactory, $uibModal, $log, $document) {
   const vm = this;
   tecnologiasFactory.getAll().then(function onSuccess(response) {
     vm.arrayTecnologias = response;
@@ -250,6 +263,7 @@ function generarTecnologias(tecnologiasFactory, $uibModal, $log, $document) {
       console.log('selectedItem -->' + selectedItem);
       vm.arrayTecnologias = tecnologiasFactory.getAll();
       tecnologiasFactory.delete(selectedItem).then(function () {
+        toastr.success('elimanda correctamente');
         tecnologiasFactory.getAll().then(function (tecnologias) {
           vm.arrayTecnologias = tecnologias;
         });
