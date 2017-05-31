@@ -208,12 +208,13 @@ function formularioTecnologiaController(toastr, $stateParams, tecnologiasFactory
       tecnologiasFactory.create(vm.tecnologia).then(function (tecnologia) {
         $state.go($state.current, {
           id: tecnologia.id,
-          mode: 'read'
+          mode: 'view'
         });
         // toastr.success('Tecnologia creada!', 'correctamente!');
       });
     } else if (vm.form.$dirty === true) {
       tecnologiasFactory.update(vm.tecnologia).then(function (tecnologia) {
+
       });
       console.log('actualizando tecnologia');
     } else {
