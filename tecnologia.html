@@ -7,7 +7,7 @@
         </div>
         <div class="row form-group  col-md-1 col-sm-1 col-xs-2">
           <button id="split-button" type="button" class="btn btn-primary "
-          ui-sref="app.tecnologiasDetalle({id:0})">Añadir </button>
+          ui-sref="app.tecnologiasDetalle({id:0, mode:'edit'})"><span class="glyphicon glyphicon-plus"></span></button>
         </div>
 
     </div>
@@ -29,18 +29,16 @@
       </td>
       <td class="col-md-3 col-xs-3">
         <div class="btn-group" uib-dropdown>
-              <button id="split-button" type="button" class="btn btn-primary" ui-sref="app.tecnologiasDetalle({id: tecno.id, mode:'view'})">
-
-              Ver</button>
+              <button id="split-button" type="button" class="btn btn-primary" ui-sref="app.tecnologiasDetalle({id: tecno.id, mode:'view'})"><span class="glyphicon glyphicon-eye-open"></span></button>
               <button type="button" class="btn btn-primary " uib-dropdown-toggle>
                     <span class="caret"></span>
                     <span class="sr-only">Split button!</span>
                 </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-              <li role="menuitem"><a href="#"ui-sref="app.tecnologiasDetalle({id: tecno.id, mode:'view'})" >Ver</a></li>
+              <li role="menuitem"><a href="#"ui-sref="app.tecnologiasDetalle({id: tecno.id, mode:'view'})" ><span class="glyphicon glyphicon-eye-open"></span> Ver</a></li>
               <li class="divider"></li>
-              <li role="menuitem"><a href="#"ui-sref="app.tecnologiasDetalle({id: tecno.id, mode:'edit'})" >Editar</a></li>
-              <li role="menuitem" ><a href="#" ng-click="$ctrl.open(tecno.id,tecno.nombre)">Borrar</a>
+              <li role="menuitem"><a href="#"ui-sref="app.tecnologiasDetalle({id: tecno.id, mode:'edit'})" ><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
+              <li role="menuitem" ><a href="#" ng-click="$ctrl.open(tecno.id,tecno.nombre)"><span class="glyphicon glyphicon-trash"></span> Borrar</a>
               </li>
             </ul>
         </div>
