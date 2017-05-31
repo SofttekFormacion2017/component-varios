@@ -214,6 +214,7 @@ function formularioTecnologiaController(toastr, $stateParams, tecnologiasFactory
       });
     } else if (vm.form.$dirty === true) {
       tecnologiasFactory.update(vm.tecnologia).then(function (tecnologia) {
+
       });
       console.log('actualizando tecnologia');
     } else {
